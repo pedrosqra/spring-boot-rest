@@ -1,7 +1,7 @@
 package br.com.learn.springbootrest.services;
 
 
-import br.com.learn.springbootrest.exceptions.IllegalMathOperation;
+import br.com.learn.springbootrest.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,7 +11,7 @@ public class MathService {
 
     public Double sum(String numberOne, String numberTwo) {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new IllegalMathOperation("Please use only numeric values");
+            throw new ResourceNotFoundException("Please use only numeric values");
         }
 
 
@@ -20,35 +20,35 @@ public class MathService {
 
     public Double subtract(String numberOne, String numberTwo) {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new IllegalMathOperation("Please use only numeric values");
+            throw new ResourceNotFoundException("Please use only numeric values");
         }
         return convertToDouble(numberOne) - convertToDouble(numberTwo);
     }
 
     public Double multiply(String numberOne, String numberTwo) {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new IllegalMathOperation("Please use only numeric values");
+            throw new ResourceNotFoundException("Please use only numeric values");
         }
         return convertToDouble(numberOne) * convertToDouble(numberTwo);
     }
 
     public Double divide(String numberOne, String numberTwo) {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new IllegalMathOperation("Please use only numeric values");
+            throw new ResourceNotFoundException("Please use only numeric values");
         }
         return convertToDouble(numberOne) / convertToDouble(numberTwo);
     }
 
     public Double mean(String numberOne, String numberTwo) {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new IllegalMathOperation("Please use only numeric values");
+            throw new ResourceNotFoundException("Please use only numeric values");
         }
         return (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
     }
 
     public Double sqrt(String numberOne) {
         if (!isNumeric(numberOne)) {
-            throw new IllegalMathOperation("Please use only numeric values");
+            throw new ResourceNotFoundException("Please use only numeric values");
         }
         return Math.sqrt(convertToDouble(numberOne));
     }
