@@ -1,8 +1,10 @@
 package br.com.learn.springbootrest.services;
 
 import br.com.learn.springbootrest.data.vo.v1.PersonVO;
+import br.com.learn.springbootrest.data.vo.v2.PersonVOV2;
 import br.com.learn.springbootrest.exceptions.ResourceNotFoundException;
 import br.com.learn.springbootrest.mapper.DozerMapper;
+import br.com.learn.springbootrest.mapper.custom.PersonMapper;
 import br.com.learn.springbootrest.model.Person;
 import br.com.learn.springbootrest.repositories.PersonRepository;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,11 @@ public class PersonServices {
 
     PersonRepository repository;
 
-    public PersonServices(PersonRepository personRepository) {
+    PersonMapper mapper;
+
+    public PersonServices(PersonRepository personRepository, PersonMapper personMapper) {
         this.repository = personRepository;
+        this.mapper = personMapper;
     }
 
     public PersonVO create(PersonVO person) {
@@ -28,15 +33,21 @@ public class PersonServices {
 
         var vo = DozerMapper.parseObject(repository.save(entity), Person.class);
         return DozerMapper.parseObject(vo, PersonVO.class);
+    }
 
+    public PersonVOV2 createV2(PersonVOV2 person) {
+        logger.info("Creating one person (V2)");
 
+        var entity = mapper.convertVOToEntity(person);
+
+        var vo = mapper.convertEntityToVO(repository.save(entity));
+        return DozerMapper.parseObject(vo, PersonVOV2.class);
     }
 
     public PersonVO update(PersonVO person) {
         logger.info("Updating one person");
 
-        var entity = repository.findById(person.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("No records found fot this id."));
+        var entity = repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found fot this id."));
 
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
@@ -50,8 +61,7 @@ public class PersonServices {
     public void delete(Long id) {
         logger.info("Deleting one person");
 
-        var entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found fot this id."));
+        var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found fot this id."));
 
         repository.delete(entity);
     }
@@ -65,8 +75,7 @@ public class PersonServices {
     public PersonVO findById(Long id) {
         logger.info("Find person by id: " + id);
 
-        var entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found fot this id."));
+        var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found fot this id."));
 
         return DozerMapper.parseObject(entity, PersonVO.class);
     }
