@@ -31,7 +31,7 @@ public class PersonController {
         return personServices.findAll();
     }
 
-    @PostMapping(
+    @PostMapping(value = "/",
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public PersonVO create(@RequestBody PersonVO person) {
